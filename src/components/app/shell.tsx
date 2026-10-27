@@ -66,16 +66,22 @@ export function AppShell() {
             </div>
             <div className="flex flex-col leading-tight">
               <span className="text-sm font-semibold tracking-tight">Operational AI Hub</span>
-              <span className="text-[11px] text-muted-foreground">Operational Intelligence Platform</span>
+              <span className="text-[11px] text-muted-foreground">
+                Operational Intelligence Platform
+              </span>
             </div>
           </div>
 
           <button className="mx-3 mt-4 flex items-center justify-between rounded-xl border border-border bg-card px-3 py-2 text-left text-sm shadow-[var(--shadow-card)] hover:bg-accent/40 transition-colors">
             <div className="flex items-center gap-2 min-w-0">
-              <div className="h-7 w-7 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-semibold">EM</div>
+              <div className="h-7 w-7 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-semibold">
+                EM
+              </div>
               <div className="min-w-0">
                 <div className="text-[13px] font-medium truncate">East Midlands Council</div>
-                <div className="text-[11px] text-muted-foreground truncate">Local Government · Production</div>
+                <div className="text-[11px] text-muted-foreground truncate">
+                  Local Government · Production
+                </div>
               </div>
             </div>
             <ChevronsUpDown className="h-3.5 w-3.5 text-muted-foreground" />
@@ -96,7 +102,12 @@ export function AppShell() {
                       : "text-muted-foreground hover:text-foreground hover:bg-accent/60",
                   )}
                 >
-                  <Icon className={cn("h-4 w-4", active ? "text-primary" : "text-muted-foreground group-hover:text-foreground")} />
+                  <Icon
+                    className={cn(
+                      "h-4 w-4",
+                      active ? "text-primary" : "text-muted-foreground group-hover:text-foreground",
+                    )}
+                  />
                   <span className="flex-1 truncate">{item.label}</span>
                   {"badge" in item && item.badge ? (
                     <span className="inline-flex items-center justify-center rounded-full bg-primary/15 text-primary text-[10px] font-semibold h-5 min-w-5 px-1.5">

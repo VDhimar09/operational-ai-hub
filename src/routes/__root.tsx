@@ -87,8 +87,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "Operational AI Hub — East Midlands Council" },
       {
         property: "og:description",
-        content:
-          "AI decision support and orchestration for local government operations.",
+        content: "AI decision support and orchestration for local government operations.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

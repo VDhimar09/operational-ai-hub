@@ -37,9 +37,7 @@ export function PanelHeader({
     <div className="flex items-start justify-between mb-4">
       <div>
         <h3 className="text-sm font-semibold tracking-tight">{title}</h3>
-        {subtitle ? (
-          <p className="text-xs text-muted-foreground mt-0.5">{subtitle}</p>
-        ) : null}
+        {subtitle ? <p className="text-xs text-muted-foreground mt-0.5">{subtitle}</p> : null}
       </div>
       {action}
     </div>
@@ -121,13 +119,16 @@ export function StatusBadge({
     medium: "bg-[oklch(0.96_0.06_80)] text-[oklch(0.5_0.16_75)] ring-[oklch(0.5_0.16_75)/0.2]",
     low: "bg-muted text-muted-foreground ring-border",
     active: "bg-destructive/10 text-destructive ring-destructive/20",
-    monitoring: "bg-[oklch(0.95_0.06_235)] text-[oklch(0.45_0.13_235)] ring-[oklch(0.45_0.13_235)/0.2]",
-    contained: "bg-[oklch(0.95_0.06_155)] text-[oklch(0.42_0.13_155)] ring-[oklch(0.42_0.13_155)/0.2]",
+    monitoring:
+      "bg-[oklch(0.95_0.06_235)] text-[oklch(0.45_0.13_235)] ring-[oklch(0.45_0.13_235)/0.2]",
+    contained:
+      "bg-[oklch(0.95_0.06_155)] text-[oklch(0.42_0.13_155)] ring-[oklch(0.42_0.13_155)/0.2]",
     resolved: "bg-muted text-muted-foreground ring-border",
     online: "bg-[oklch(0.95_0.06_155)] text-[oklch(0.42_0.13_155)] ring-[oklch(0.42_0.13_155)/0.2]",
     idle: "bg-muted text-muted-foreground ring-border",
     info: "bg-primary/10 text-primary ring-primary/20",
-    success: "bg-[oklch(0.95_0.06_155)] text-[oklch(0.42_0.13_155)] ring-[oklch(0.42_0.13_155)/0.2]",
+    success:
+      "bg-[oklch(0.95_0.06_155)] text-[oklch(0.42_0.13_155)] ring-[oklch(0.42_0.13_155)/0.2]",
     warning: "bg-[oklch(0.96_0.06_80)] text-[oklch(0.5_0.16_75)] ring-[oklch(0.5_0.16_75)/0.2]",
     ai: "bg-gradient-to-r from-primary/10 to-[oklch(0.22_0.09_335)/0.1] text-primary ring-primary/20",
   };

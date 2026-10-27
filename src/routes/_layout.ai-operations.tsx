@@ -50,7 +50,10 @@ function AiOperations() {
               </div>
               <div className="mt-3 flex flex-wrap gap-2">
                 {suggestedPrompts.map((p) => (
-                  <button key={p} className="text-[11px] rounded-full border border-border bg-card px-3 py-1 hover:bg-accent/40">
+                  <button
+                    key={p}
+                    className="text-[11px] rounded-full border border-border bg-card px-3 py-1 hover:bg-accent/40"
+                  >
                     {p}
                   </button>
                 ))}
@@ -68,7 +71,11 @@ function AiOperations() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {[
-                { name: "Patient Portal", detail: "Auth degradation → login failures across 4 regions", impact: 92 },
+                {
+                  name: "Patient Portal",
+                  detail: "Auth degradation → login failures across 4 regions",
+                  impact: 92,
+                },
                 { name: "Clinician App", detail: "Session mint delays > 8s p95", impact: 74 },
                 { name: "Payments", detail: "Second-factor challenge storm risk", impact: 41 },
               ].map((c) => (
@@ -97,7 +104,10 @@ function AiOperations() {
                 "Draft board summary of EVT-2481",
                 "What did we do last time this happened?",
               ].map((q) => (
-                <li key={q} className="flex items-center justify-between rounded-lg border border-border px-3 py-2 hover:bg-accent/30 cursor-pointer">
+                <li
+                  key={q}
+                  className="flex items-center justify-between rounded-lg border border-border px-3 py-2 hover:bg-accent/30 cursor-pointer"
+                >
                   <span className="truncate">{q}</span>
                   <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
                 </li>
@@ -110,7 +120,10 @@ function AiOperations() {
             </div>
             <div className="grid grid-cols-2 gap-2">
               {["Summarise", "Compare", "Predict", "Escalate", "Cite", "Draft"].map((a) => (
-                <button key={a} className="rounded-lg border border-border px-3 py-2 text-xs font-medium hover:bg-accent/30">
+                <button
+                  key={a}
+                  className="rounded-lg border border-border px-3 py-2 text-xs font-medium hover:bg-accent/30"
+                >
                   {a}
                 </button>
               ))}
@@ -137,12 +150,16 @@ function AnswerCard() {
           </div>
 
           <Section title="Summary">
-            Today's composite risk climbed 6 points driven primarily by a coordinated credential-stuffing pattern against the auth gateway (EVT-2481), amplified by WMS latency drift at Meridian and a projected ED staffing gap tonight.
+            Today's composite risk climbed 6 points driven primarily by a coordinated
+            credential-stuffing pattern against the auth gateway (EVT-2481), amplified by WMS
+            latency drift at Meridian and a projected ED staffing gap tonight.
           </Section>
 
           <Section title="Reasoning">
             <ul className="list-disc pl-5 space-y-1">
-              <li>Auth 401 spikes correlate with 4 residential ASNs — indicator of automated abuse.</li>
+              <li>
+                Auth 401 spikes correlate with 4 residential ASNs — indicator of automated abuse.
+              </li>
               <li>WMS p95 latency is degrading by ~7ms/hour; SLO breach projected in 47 min.</li>
               <li>Rota system shows ED coverage 22% below floor for the 22:00 shift.</li>
             </ul>
@@ -152,10 +169,16 @@ function AnswerCard() {
             <ul className="space-y-2">
               {[
                 { t: "Engage rate limiting on auth endpoints", meta: "Impact 92 · Reversible" },
-                { t: "Reallocate 4 clinicians from Site B to Site A", meta: "Impact 64 · Requires approval" },
+                {
+                  t: "Reallocate 4 clinicians from Site B to Site A",
+                  meta: "Impact 64 · Requires approval",
+                },
                 { t: "Warm-standby carrier fallback #2", meta: "Impact 48 · Low cost" },
               ].map((a) => (
-                <li key={a.t} className="flex items-center justify-between rounded-xl border border-border bg-card p-3">
+                <li
+                  key={a.t}
+                  className="flex items-center justify-between rounded-xl border border-border bg-card p-3"
+                >
                   <div className="flex items-center gap-3">
                     <div className="h-8 w-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
                       <CheckCircle2 className="h-4 w-4" />
@@ -176,7 +199,12 @@ function AnswerCard() {
           <Section title="Related Events">
             <div className="flex flex-wrap gap-1.5">
               {["EVT-2481", "EVT-2479", "EVT-2476"].map((e) => (
-                <span key={e} className="text-[11px] font-mono rounded-md border border-border bg-muted/40 px-2 py-0.5">{e}</span>
+                <span
+                  key={e}
+                  className="text-[11px] font-mono rounded-md border border-border bg-muted/40 px-2 py-0.5"
+                >
+                  {e}
+                </span>
               ))}
             </div>
           </Section>
@@ -195,7 +223,9 @@ function AnswerCard() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="mt-4">
-      <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">{title}</div>
+      <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+        {title}
+      </div>
       <div className="text-sm text-foreground/90 leading-relaxed">{children}</div>
     </div>
   );

@@ -47,7 +47,9 @@ function KnowledgePage() {
               key={t}
               onClick={() => setType(t)}
               className={`px-3 py-1.5 text-xs font-medium rounded-md transition ${
-                type === t ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+                type === t
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {t}
@@ -67,8 +69,12 @@ function KnowledgePage() {
                 <FileText className="h-5 w-5" />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-[11px] font-medium text-primary uppercase tracking-wider">{d.type}</div>
-                <h3 className="text-sm font-semibold mt-1 group-hover:text-primary transition">{d.title}</h3>
+                <div className="text-[11px] font-medium text-primary uppercase tracking-wider">
+                  {d.type}
+                </div>
+                <h3 className="text-sm font-semibold mt-1 group-hover:text-primary transition">
+                  {d.title}
+                </h3>
                 <div className="mt-2 flex items-center justify-between text-[11px] text-muted-foreground">
                   <span>{d.owner}</span>
                   <span>Updated {d.updated}</span>
@@ -81,7 +87,9 @@ function KnowledgePage() {
           <Panel className="md:col-span-2 xl:col-span-3 text-center py-16">
             <BookOpen className="h-8 w-8 mx-auto text-muted-foreground" />
             <div className="mt-3 text-sm font-medium">No documents match.</div>
-            <div className="text-xs text-muted-foreground mt-1">Try a broader search or a different type.</div>
+            <div className="text-xs text-muted-foreground mt-1">
+              Try a broader search or a different type.
+            </div>
           </Panel>
         ) : null}
       </div>

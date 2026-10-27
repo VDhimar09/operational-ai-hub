@@ -43,27 +43,42 @@ function AgentsPage() {
 
             <div className="mt-4 grid grid-cols-2 gap-3 text-xs">
               <div className="rounded-lg bg-muted/40 px-3 py-2">
-                <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Confidence</div>
+                <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                  Confidence
+                </div>
                 <div className="text-sm font-semibold mt-0.5">{a.confidence}%</div>
               </div>
               <div className="rounded-lg bg-muted/40 px-3 py-2">
-                <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Last activity</div>
+                <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                  Last activity
+                </div>
                 <div className="text-sm font-semibold mt-0.5">{a.lastActivity}</div>
               </div>
             </div>
 
             <div className="mt-3">
-              <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1.5">Capabilities</div>
+              <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1.5">
+                Capabilities
+              </div>
               <div className="flex flex-wrap gap-1.5">
                 {a.capabilities.map((c) => (
-                  <span key={c} className="text-[11px] rounded-md border border-border bg-card px-2 py-0.5">{c}</span>
+                  <span
+                    key={c}
+                    className="text-[11px] rounded-md border border-border bg-card px-2 py-0.5"
+                  >
+                    {c}
+                  </span>
                 ))}
               </div>
             </div>
 
             <div className="mt-4 flex items-center gap-2">
-              <button className="flex-1 rounded-lg bg-primary text-primary-foreground px-3 py-2 text-xs font-medium hover:opacity-90">Open console</button>
-              <button className="rounded-lg border border-border px-3 py-2 text-xs font-medium hover:bg-accent/30">Logs</button>
+              <button className="flex-1 rounded-lg bg-primary text-primary-foreground px-3 py-2 text-xs font-medium hover:opacity-90">
+                Open console
+              </button>
+              <button className="rounded-lg border border-border px-3 py-2 text-xs font-medium hover:bg-accent/30">
+                Logs
+              </button>
             </div>
           </Panel>
         ))}

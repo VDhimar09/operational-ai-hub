@@ -273,25 +273,113 @@ export const notifications = [
 ];
 
 export const documents = [
-  { id: "d1", title: "Cyber Incident Response Playbook", type: "Playbook", updated: "2d ago", owner: "InfoSec" },
-  { id: "d2", title: "Business Continuity Policy v6", type: "Policy", updated: "1w ago", owner: "Risk & Compliance" },
-  { id: "d3", title: "Clinical Escalation Matrix", type: "Guideline", updated: "3d ago", owner: "Clinical Ops" },
-  { id: "d4", title: "Supplier Failover SOP", type: "Procedure", updated: "5d ago", owner: "Procurement" },
-  { id: "d5", title: "Storm & Severe Weather Response", type: "Playbook", updated: "12d ago", owner: "Facilities" },
-  { id: "d6", title: "Public Communications Charter", type: "Policy", updated: "1mo ago", owner: "Comms" },
-  { id: "d7", title: "Data Centre Runbook — Tier 1", type: "Procedure", updated: "6d ago", owner: "SRE" },
-  { id: "d8", title: "AI Governance Framework", type: "Policy", updated: "2w ago", owner: "Risk & Compliance" },
+  {
+    id: "d1",
+    title: "Cyber Incident Response Playbook",
+    type: "Playbook",
+    updated: "2d ago",
+    owner: "InfoSec",
+  },
+  {
+    id: "d2",
+    title: "Business Continuity Policy v6",
+    type: "Policy",
+    updated: "1w ago",
+    owner: "Risk & Compliance",
+  },
+  {
+    id: "d3",
+    title: "Clinical Escalation Matrix",
+    type: "Guideline",
+    updated: "3d ago",
+    owner: "Clinical Ops",
+  },
+  {
+    id: "d4",
+    title: "Supplier Failover SOP",
+    type: "Procedure",
+    updated: "5d ago",
+    owner: "Procurement",
+  },
+  {
+    id: "d5",
+    title: "Storm & Severe Weather Response",
+    type: "Playbook",
+    updated: "12d ago",
+    owner: "Facilities",
+  },
+  {
+    id: "d6",
+    title: "Public Communications Charter",
+    type: "Policy",
+    updated: "1mo ago",
+    owner: "Comms",
+  },
+  {
+    id: "d7",
+    title: "Data Centre Runbook — Tier 1",
+    type: "Procedure",
+    updated: "6d ago",
+    owner: "SRE",
+  },
+  {
+    id: "d8",
+    title: "AI Governance Framework",
+    type: "Policy",
+    updated: "2w ago",
+    owner: "Risk & Compliance",
+  },
 ];
 
 export const teamMembers = [
-  { name: "Amara Okafor", role: "Chief Operating Officer", org: "East Midlands Council", status: "on-call" },
-  { name: "Ren Takahashi", role: "Head of ICT & Cyber", org: "East Midlands Council", status: "active" },
-  { name: "Sofia Marín", role: "Waste Operations Lead", org: "East Midlands Council", status: "active" },
-  { name: "David Ojo", role: "Planning Service Manager", org: "East Midlands Council", status: "away" },
-  { name: "Priya Ramanathan", role: "Head of Social Care", org: "East Midlands Council", status: "active" },
-  { name: "Lars Bergström", role: "Director of Communications", org: "East Midlands Council", status: "on-call" },
-  { name: "Chen Wei", role: "Emergency Planning Officer", org: "East Midlands Council", status: "active" },
-  { name: "Isabelle Laurent", role: "Revenues & Benefits Lead", org: "East Midlands Council", status: "active" },
+  {
+    name: "Amara Okafor",
+    role: "Chief Operating Officer",
+    org: "East Midlands Council",
+    status: "on-call",
+  },
+  {
+    name: "Ren Takahashi",
+    role: "Head of ICT & Cyber",
+    org: "East Midlands Council",
+    status: "active",
+  },
+  {
+    name: "Sofia Marín",
+    role: "Waste Operations Lead",
+    org: "East Midlands Council",
+    status: "active",
+  },
+  {
+    name: "David Ojo",
+    role: "Planning Service Manager",
+    org: "East Midlands Council",
+    status: "away",
+  },
+  {
+    name: "Priya Ramanathan",
+    role: "Head of Social Care",
+    org: "East Midlands Council",
+    status: "active",
+  },
+  {
+    name: "Lars Bergström",
+    role: "Director of Communications",
+    org: "East Midlands Council",
+    status: "on-call",
+  },
+  {
+    name: "Chen Wei",
+    role: "Emergency Planning Officer",
+    org: "East Midlands Council",
+    status: "active",
+  },
+  {
+    name: "Isabelle Laurent",
+    role: "Revenues & Benefits Lead",
+    org: "East Midlands Council",
+    status: "active",
+  },
 ];
 
 export const workflowNodes = [
@@ -299,7 +387,12 @@ export const workflowNodes = [
   { id: "ai", label: "AI Analysis", kind: "ai", desc: "Operations Agent classifies + enriches" },
   { id: "risk", label: "Risk Assessment", kind: "ai", desc: "Risk Agent scores cascading impact" },
   { id: "approval", label: "Human Approval", kind: "human", desc: "Ops Manager gate · SLA 5m" },
-  { id: "tasks", label: "Task Creation", kind: "action", desc: "Assign to responders · create runbook" },
+  {
+    id: "tasks",
+    label: "Task Creation",
+    kind: "action",
+    desc: "Assign to responders · create runbook",
+  },
   { id: "notify", label: "Notifications", kind: "action", desc: "Multi-channel stakeholder comms" },
   { id: "resolve", label: "Resolution", kind: "terminal", desc: "Verify · post-incident review" },
 ];

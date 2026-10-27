@@ -70,12 +70,50 @@ function Dashboard() {
       />
 
       <div className="mt-6 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-        <Metric label="Critical Services Online" value="34/36" delta="2 degraded" positive={false} icon={<CheckCircle2 className="h-4 w-4" />} />
-        <Metric label="Operational Risks" value={12} delta="+3 today" positive={false} icon={<AlertOctagon className="h-4 w-4" />} />
-        <Metric label="AI Recommendations" value={7} delta="4 awaiting approval" positive hint="" icon={<Sparkles className="h-4 w-4" />} />
-        <Metric label="Pending Decisions" value={5} delta="2 overdue" positive={false} icon={<Gauge className="h-4 w-4" />} />
-        <Metric label="Departments Impacted" value={4} delta="of 11" positive hint="" icon={<Users2 className="h-4 w-4" />} />
-        <Metric label="Estimated Hours Saved" value="182h" delta="+24h this week" positive icon={<Brain className="h-4 w-4" />} />
+        <Metric
+          label="Critical Services Online"
+          value="34/36"
+          delta="2 degraded"
+          positive={false}
+          icon={<CheckCircle2 className="h-4 w-4" />}
+        />
+        <Metric
+          label="Operational Risks"
+          value={12}
+          delta="+3 today"
+          positive={false}
+          icon={<AlertOctagon className="h-4 w-4" />}
+        />
+        <Metric
+          label="AI Recommendations"
+          value={7}
+          delta="4 awaiting approval"
+          positive
+          hint=""
+          icon={<Sparkles className="h-4 w-4" />}
+        />
+        <Metric
+          label="Pending Decisions"
+          value={5}
+          delta="2 overdue"
+          positive={false}
+          icon={<Gauge className="h-4 w-4" />}
+        />
+        <Metric
+          label="Departments Impacted"
+          value={4}
+          delta="of 11"
+          positive
+          hint=""
+          icon={<Users2 className="h-4 w-4" />}
+        />
+        <Metric
+          label="Estimated Hours Saved"
+          value="182h"
+          delta="+24h this week"
+          positive
+          icon={<Brain className="h-4 w-4" />}
+        />
       </div>
 
       <div className="mt-6 grid grid-cols-1 xl:grid-cols-3 gap-4">
@@ -85,8 +123,12 @@ function Dashboard() {
             subtitle="Composite score across cyber, staffing, supply, facilities"
             action={
               <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
-                <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-primary" /> Composite</span>
-                <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-[oklch(0.66_0.16_155)]" /> AI-adjusted</span>
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="h-2 w-2 rounded-full bg-primary" /> Composite
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="h-2 w-2 rounded-full bg-[oklch(0.66_0.16_155)]" /> AI-adjusted
+                </span>
               </div>
             }
           />
@@ -99,12 +141,43 @@ function Dashboard() {
                     <stop offset="100%" stopColor="oklch(0.32 0.10 335)" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid stroke="oklch(0.92 0.012 255)" strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="t" tick={{ fontSize: 11, fill: "oklch(0.5 0.03 257)" }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fontSize: 11, fill: "oklch(0.5 0.03 257)" }} axisLine={false} tickLine={false} />
-                <Tooltip contentStyle={{ borderRadius: 12, border: "1px solid oklch(0.92 0.012 255)", fontSize: 12 }} />
-                <Area type="monotone" dataKey="risk" stroke="oklch(0.32 0.10 335)" strokeWidth={2} fill="url(#riskFill)" />
-                <Line type="monotone" dataKey="ai" stroke="oklch(0.66 0.16 155)" strokeWidth={2} dot={false} />
+                <CartesianGrid
+                  stroke="oklch(0.92 0.012 255)"
+                  strokeDasharray="3 3"
+                  vertical={false}
+                />
+                <XAxis
+                  dataKey="t"
+                  tick={{ fontSize: 11, fill: "oklch(0.5 0.03 257)" }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <YAxis
+                  tick={{ fontSize: 11, fill: "oklch(0.5 0.03 257)" }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <Tooltip
+                  contentStyle={{
+                    borderRadius: 12,
+                    border: "1px solid oklch(0.92 0.012 255)",
+                    fontSize: 12,
+                  }}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="risk"
+                  stroke="oklch(0.32 0.10 335)"
+                  strokeWidth={2}
+                  fill="url(#riskFill)"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="ai"
+                  stroke="oklch(0.66 0.16 155)"
+                  strokeWidth={2}
+                  dot={false}
+                />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -123,8 +196,12 @@ function Dashboard() {
                     <span className="text-[11px] font-mono text-muted-foreground">{e.id}</span>
                     <StatusBadge kind={e.priority}>{e.priority}</StatusBadge>
                   </div>
-                  <div className="text-sm font-medium mt-0.5 truncate group-hover:text-primary transition">{e.title}</div>
-                  <div className="text-[11px] text-muted-foreground mt-0.5">{e.department} · {e.createdAt}</div>
+                  <div className="text-sm font-medium mt-0.5 truncate group-hover:text-primary transition">
+                    {e.title}
+                  </div>
+                  <div className="text-[11px] text-muted-foreground mt-0.5">
+                    {e.department} · {e.createdAt}
+                  </div>
                 </div>
               </li>
             ))}
@@ -172,7 +249,11 @@ function Dashboard() {
                       style={{
                         width: `${d.health}%`,
                         background:
-                          d.health > 85 ? "oklch(0.66 0.16 155)" : d.health > 70 ? "oklch(0.32 0.10 335)" : "oklch(0.76 0.16 75)",
+                          d.health > 85
+                            ? "oklch(0.66 0.16 155)"
+                            : d.health > 70
+                              ? "oklch(0.32 0.10 335)"
+                              : "oklch(0.76 0.16 75)",
                       }}
                     />
                   </div>
@@ -187,7 +268,14 @@ function Dashboard() {
           <div className="h-48">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
-                <Pie data={recCategories} dataKey="value" nameKey="name" innerRadius={45} outerRadius={70} paddingAngle={2}>
+                <Pie
+                  data={recCategories}
+                  dataKey="value"
+                  nameKey="name"
+                  innerRadius={45}
+                  outerRadius={70}
+                  paddingAngle={2}
+                >
                   {recCategories.map((_, i) => (
                     <Cell key={i} fill={chartColors[i % chartColors.length]} stroke="none" />
                   ))}
@@ -205,12 +293,36 @@ function Dashboard() {
           <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={workflowCompletion}>
-                <CartesianGrid stroke="oklch(0.92 0.012 255)" strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="d" tick={{ fontSize: 11, fill: "oklch(0.5 0.03 257)" }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fontSize: 11, fill: "oklch(0.5 0.03 257)" }} axisLine={false} tickLine={false} />
-                <Tooltip contentStyle={{ borderRadius: 12, border: "1px solid oklch(0.92 0.012 255)", fontSize: 12 }} />
+                <CartesianGrid
+                  stroke="oklch(0.92 0.012 255)"
+                  strokeDasharray="3 3"
+                  vertical={false}
+                />
+                <XAxis
+                  dataKey="d"
+                  tick={{ fontSize: 11, fill: "oklch(0.5 0.03 257)" }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <YAxis
+                  tick={{ fontSize: 11, fill: "oklch(0.5 0.03 257)" }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <Tooltip
+                  contentStyle={{
+                    borderRadius: 12,
+                    border: "1px solid oklch(0.92 0.012 255)",
+                    fontSize: 12,
+                  }}
+                />
                 <Bar dataKey="done" stackId="a" radius={[0, 0, 0, 0]} fill="oklch(0.32 0.10 335)" />
-                <Bar dataKey="pending" stackId="a" radius={[6, 6, 0, 0]} fill="oklch(0.88 0.03 335)" />
+                <Bar
+                  dataKey="pending"
+                  stackId="a"
+                  radius={[6, 6, 0, 0]}
+                  fill="oklch(0.88 0.03 335)"
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -234,14 +346,20 @@ function Dashboard() {
         <Panel>
           <PanelHeader title="Tasks Awaiting Approval" subtitle="AI-proposed, human-in-the-loop" />
           <ul className="space-y-3 text-sm">
-            {["Rate-limit auth endpoints", "Reallocate 4 ED clinicians from Site B", "Activate carrier fallback #2"].map((t, i) => (
+            {[
+              "Rate-limit auth endpoints",
+              "Reallocate 4 ED clinicians from Site B",
+              "Activate carrier fallback #2",
+            ].map((t, i) => (
               <li key={i} className="flex items-center gap-3 rounded-xl border border-border p-3">
                 <div className="h-8 w-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
                   <CheckCircle2 className="h-4 w-4" />
                 </div>
                 <div className="flex-1">
                   <div className="font-medium">{t}</div>
-                  <div className="text-[11px] text-muted-foreground">Confidence 88% · impacts 2 teams</div>
+                  <div className="text-[11px] text-muted-foreground">
+                    Confidence 88% · impacts 2 teams
+                  </div>
                 </div>
                 <button className="text-xs font-medium text-primary hover:underline">Review</button>
               </li>
@@ -249,7 +367,10 @@ function Dashboard() {
           </ul>
         </Panel>
         <Panel>
-          <PanelHeader title="Directorate Snapshot" subtitle="Live health across council directorates" />
+          <PanelHeader
+            title="Directorate Snapshot"
+            subtitle="Live health across council directorates"
+          />
           <div className="space-y-3">
             {[
               { name: "Adults & Social Care", sector: "Statutory service", risk: 71 },

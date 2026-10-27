@@ -64,12 +64,12 @@
 :root {
   --radius: 1rem;
   --background: oklch(0.982 0.003 250);
-  --foreground: oklch(0.20 0.02 285);
+  --foreground: oklch(0.2 0.02 285);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.20 0.02 285);
+  --card-foreground: oklch(0.2 0.02 285);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.20 0.02 285);
-  --primary: oklch(0.32 0.10 335);
+  --popover-foreground: oklch(0.2 0.02 285);
+  --primary: oklch(0.32 0.1 335);
   --primary-foreground: oklch(0.99 0.005 247);
   --primary-soft: oklch(0.95 0.03 335);
   --secondary: oklch(0.22 0.09 335);
@@ -77,7 +77,7 @@
   --muted: oklch(0.965 0.004 250);
   --muted-foreground: oklch(0.48 0.02 285);
   --accent: oklch(0.96 0.02 335);
-  --accent-foreground: oklch(0.32 0.10 335);
+  --accent-foreground: oklch(0.32 0.1 335);
   --destructive: oklch(0.6 0.22 27);
   --destructive-foreground: oklch(0.99 0.005 247);
   --success: oklch(0.66 0.16 155);
@@ -85,24 +85,24 @@
   --info: oklch(0.66 0.13 235);
   --border: oklch(0.925 0.004 250);
   --input: oklch(0.93 0.004 250);
-  --ring: oklch(0.32 0.10 335);
-  --chart-1: oklch(0.32 0.10 335);
+  --ring: oklch(0.32 0.1 335);
+  --chart-1: oklch(0.32 0.1 335);
   --chart-2: oklch(0.48 0.09 180);
   --chart-3: oklch(0.66 0.16 155);
   --chart-4: oklch(0.76 0.16 75);
   --chart-5: oklch(0.55 0.2 300);
   --sidebar: oklch(1 0 0);
   --sidebar-foreground: oklch(0.28 0.02 285);
-  --sidebar-primary: oklch(0.32 0.10 335);
+  --sidebar-primary: oklch(0.32 0.1 335);
   --sidebar-primary-foreground: oklch(0.99 0.005 247);
   --sidebar-accent: oklch(0.96 0.02 335);
-  --sidebar-accent-foreground: oklch(0.32 0.10 335);
+  --sidebar-accent-foreground: oklch(0.32 0.1 335);
   --sidebar-border: oklch(0.925 0.004 250);
-  --sidebar-ring: oklch(0.32 0.10 335);
+  --sidebar-ring: oklch(0.32 0.1 335);
   --shadow-elegant: 0 1px 2px 0 rgb(15 23 42 / 0.04), 0 4px 16px -4px rgb(90 31 92 / 0.08);
   --shadow-card: 0 1px 3px rgb(15 23 42 / 0.04), 0 1px 2px rgb(15 23 42 / 0.02);
   --accent-teal: oklch(0.48 0.09 180);
-  --gradient-primary: linear-gradient(135deg, oklch(0.32 0.10 335), oklch(0.22 0.09 335));
+  --gradient-primary: linear-gradient(135deg, oklch(0.32 0.1 335), oklch(0.22 0.09 335));
   --gradient-subtle: linear-gradient(180deg, oklch(1 0 0), oklch(0.982 0.003 250));
 }
 

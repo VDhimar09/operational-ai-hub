@@ -33,14 +33,25 @@ function TeamsPage() {
             <div className="text-right">Status</div>
           </div>
           {teamMembers.map((m, i) => (
-            <div key={m.name} className="grid grid-cols-[1fr_1fr_120px_100px] gap-3 px-5 py-3 items-center border-b border-border last:border-0 hover:bg-accent/30">
+            <div
+              key={m.name}
+              className="grid grid-cols-[1fr_1fr_120px_100px] gap-3 px-5 py-3 items-center border-b border-border last:border-0 hover:bg-accent/30"
+            >
               <div className="flex items-center gap-3 min-w-0">
-                <div className={`h-9 w-9 rounded-full flex items-center justify-center text-xs font-semibold text-primary-foreground shrink-0 bg-gradient-to-br ${
-                  i % 3 === 0 ? "from-primary to-[oklch(0.62_0.19_275)]" :
-                  i % 3 === 1 ? "from-[oklch(0.66_0.16_155)] to-primary" :
-                  "from-[oklch(0.76_0.16_75)] to-[oklch(0.62_0.22_27)]"
-                }`}>
-                  {m.name.split(" ").map((s) => s[0]).slice(0, 2).join("")}
+                <div
+                  className={`h-9 w-9 rounded-full flex items-center justify-center text-xs font-semibold text-primary-foreground shrink-0 bg-gradient-to-br ${
+                    i % 3 === 0
+                      ? "from-primary to-[oklch(0.62_0.19_275)]"
+                      : i % 3 === 1
+                        ? "from-[oklch(0.66_0.16_155)] to-primary"
+                        : "from-[oklch(0.76_0.16_75)] to-[oklch(0.62_0.22_27)]"
+                  }`}
+                >
+                  {m.name
+                    .split(" ")
+                    .map((s) => s[0])
+                    .slice(0, 2)
+                    .join("")}
                 </div>
                 <div className="min-w-0">
                   <div className="text-sm font-medium truncate">{m.name}</div>
@@ -49,7 +60,13 @@ function TeamsPage() {
               <div className="text-sm text-muted-foreground">{m.role}</div>
               <div className="text-xs text-muted-foreground truncate">{m.org}</div>
               <div className="text-right">
-                <StatusBadge kind={m.status === "on-call" ? "warning" : m.status === "away" ? "idle" : "online"}>{m.status}</StatusBadge>
+                <StatusBadge
+                  kind={
+                    m.status === "on-call" ? "warning" : m.status === "away" ? "idle" : "online"
+                  }
+                >
+                  {m.status}
+                </StatusBadge>
               </div>
             </div>
           ))}
@@ -61,9 +78,14 @@ function TeamsPage() {
           </div>
           <ul className="space-y-2">
             {roles.map((r) => (
-              <li key={r} className="flex items-center justify-between rounded-lg border border-border px-3 py-2 text-sm">
+              <li
+                key={r}
+                className="flex items-center justify-between rounded-lg border border-border px-3 py-2 text-sm"
+              >
                 <span>{r}</span>
-                <span className="text-[11px] text-muted-foreground">{Math.floor(Math.random() * 6) + 1} people</span>
+                <span className="text-[11px] text-muted-foreground">
+                  {Math.floor(Math.random() * 6) + 1} people
+                </span>
               </li>
             ))}
           </ul>

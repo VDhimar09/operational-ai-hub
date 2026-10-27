@@ -52,7 +52,13 @@ function AnalyticsPage() {
 
       <div className="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-4">
         {analyticsKpis.map((k) => (
-          <Metric key={k.label} label={k.label} value={k.value} delta={k.delta} positive={k.positive} />
+          <Metric
+            key={k.label}
+            label={k.label}
+            value={k.value}
+            delta={k.delta}
+            positive={k.positive}
+          />
         ))}
       </div>
 
@@ -62,13 +68,44 @@ function AnalyticsPage() {
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={riskTrend}>
-                <CartesianGrid stroke="oklch(0.92 0.012 255)" strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="t" tick={{ fontSize: 11, fill: "oklch(0.5 0.03 257)" }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fontSize: 11, fill: "oklch(0.5 0.03 257)" }} axisLine={false} tickLine={false} />
-                <Tooltip contentStyle={{ borderRadius: 12, border: "1px solid oklch(0.92 0.012 255)", fontSize: 12 }} />
+                <CartesianGrid
+                  stroke="oklch(0.92 0.012 255)"
+                  strokeDasharray="3 3"
+                  vertical={false}
+                />
+                <XAxis
+                  dataKey="t"
+                  tick={{ fontSize: 11, fill: "oklch(0.5 0.03 257)" }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <YAxis
+                  tick={{ fontSize: 11, fill: "oklch(0.5 0.03 257)" }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <Tooltip
+                  contentStyle={{
+                    borderRadius: 12,
+                    border: "1px solid oklch(0.92 0.012 255)",
+                    fontSize: 12,
+                  }}
+                />
                 <Legend iconType="circle" wrapperStyle={{ fontSize: 11 }} />
-                <Line type="monotone" dataKey="risk" stroke="oklch(0.32 0.10 335)" strokeWidth={2} dot={{ r: 3 }} />
-                <Line type="monotone" dataKey="ai" stroke="oklch(0.66 0.16 155)" strokeWidth={2} dot={{ r: 3 }} />
+                <Line
+                  type="monotone"
+                  dataKey="risk"
+                  stroke="oklch(0.32 0.10 335)"
+                  strokeWidth={2}
+                  dot={{ r: 3 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="ai"
+                  stroke="oklch(0.66 0.16 155)"
+                  strokeWidth={2}
+                  dot={{ r: 3 }}
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -79,8 +116,17 @@ function AnalyticsPage() {
           <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
-                <Pie data={distribution} dataKey="value" nameKey="name" innerRadius={45} outerRadius={80} paddingAngle={2}>
-                  {distribution.map((_, i) => <Cell key={i} fill={colors[i]} stroke="none" />)}
+                <Pie
+                  data={distribution}
+                  dataKey="value"
+                  nameKey="name"
+                  innerRadius={45}
+                  outerRadius={80}
+                  paddingAngle={2}
+                >
+                  {distribution.map((_, i) => (
+                    <Cell key={i} fill={colors[i]} stroke="none" />
+                  ))}
                 </Pie>
                 <Legend iconType="circle" wrapperStyle={{ fontSize: 11 }} />
               </PieChart>
@@ -96,9 +142,17 @@ function AnalyticsPage() {
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart data={departments}>
                 <PolarGrid stroke="oklch(0.92 0.012 255)" />
-                <PolarAngleAxis dataKey="name" tick={{ fontSize: 10, fill: "oklch(0.5 0.03 257)" }} />
+                <PolarAngleAxis
+                  dataKey="name"
+                  tick={{ fontSize: 10, fill: "oklch(0.5 0.03 257)" }}
+                />
                 <PolarRadiusAxis tick={{ fontSize: 9 }} axisLine={false} />
-                <Radar dataKey="health" stroke="oklch(0.32 0.10 335)" fill="oklch(0.32 0.10 335)" fillOpacity={0.25} />
+                <Radar
+                  dataKey="health"
+                  stroke="oklch(0.32 0.10 335)"
+                  fill="oklch(0.32 0.10 335)"
+                  fillOpacity={0.25}
+                />
               </RadarChart>
             </ResponsiveContainer>
           </div>
@@ -109,10 +163,29 @@ function AnalyticsPage() {
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={workflowCompletion}>
-                <CartesianGrid stroke="oklch(0.92 0.012 255)" strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="d" tick={{ fontSize: 11, fill: "oklch(0.5 0.03 257)" }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fontSize: 11, fill: "oklch(0.5 0.03 257)" }} axisLine={false} tickLine={false} />
-                <Tooltip contentStyle={{ borderRadius: 12, border: "1px solid oklch(0.92 0.012 255)", fontSize: 12 }} />
+                <CartesianGrid
+                  stroke="oklch(0.92 0.012 255)"
+                  strokeDasharray="3 3"
+                  vertical={false}
+                />
+                <XAxis
+                  dataKey="d"
+                  tick={{ fontSize: 11, fill: "oklch(0.5 0.03 257)" }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <YAxis
+                  tick={{ fontSize: 11, fill: "oklch(0.5 0.03 257)" }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <Tooltip
+                  contentStyle={{
+                    borderRadius: 12,
+                    border: "1px solid oklch(0.92 0.012 255)",
+                    fontSize: 12,
+                  }}
+                />
                 <Legend iconType="circle" wrapperStyle={{ fontSize: 11 }} />
                 <Bar dataKey="done" fill="oklch(0.32 0.10 335)" radius={[6, 6, 0, 0]} />
                 <Bar dataKey="pending" fill="oklch(0.88 0.03 335)" radius={[6, 6, 0, 0]} />

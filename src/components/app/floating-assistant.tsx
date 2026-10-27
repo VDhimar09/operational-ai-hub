@@ -23,7 +23,9 @@ export function FloatingAssistant() {
             </div>
             <div>
               <div className="text-sm font-medium">Operational Advisor</div>
-              <div className="text-[11px] text-muted-foreground">Grounded in live council operations</div>
+              <div className="text-[11px] text-muted-foreground">
+                Grounded in live council operations
+              </div>
             </div>
           </div>
           <div className="p-4 space-y-3 text-sm max-h-72 overflow-y-auto">
