@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { createFileRoute } from "@tanstack/react-router";
 import { PageContainer, PageHeader } from "@/components/app/shell";
 import { Panel } from "@/components/app/ui";
 import { workflowNodes } from "@/lib/mock/data";
@@ -18,6 +18,8 @@ import {
   Users,
   Zap,
   Bell,
+  Clock,
+  XCircle,
 } from "lucide-react";
 
 export const Route = createFileRoute("/_layout/workflows")({
@@ -32,78 +34,104 @@ const iconMap: Record<string, typeof Bot> = {
   terminal: CheckCircle2,
 };
 
-const statusStyles: Record<SimulationStepStatus, string> = {
-  Pending: "bg-muted text-muted-foreground",
-  Running: "bg-primary/10 text-primary",
-  Completed: "bg-[oklch(0.95_0.06_155)] text-[oklch(0.42_0.13_155)]",
-  "Waiting for Approval": "bg-[oklch(0.96_0.06_80)] text-[oklch(0.5_0.16_75)]",
-  Rejected: "bg-destructive/10 text-destructive",
-  Failed: "bg-destructive/10 text-destructive",
-};
-
-const formatRunTime = (startedAt: string) =>
-  new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" }).format(
-    new Date(startedAt),
-  );
+function statusClasses(status: SimulationStepStatus) {
+  switch (status) {
+    case "Completed":
+      return "bg-emerald-100 text-emerald-800";
+    case "Running":
+      return "bg-blue-100 text-blue-800";
+    case "Waiting for Approval":
+      return "bg-amber-100 text-amber-800";
+    case "Rejected":
+    case "Failed":
+      return "bg-red-100 text-red-800";
+    default:
+      return "bg-muted text-muted-foreground";
+  }
+}
 
 function WorkflowsPage() {
-  const [runHistory, setRunHistory] = useState<SimulationRun[]>([]);
-  const [draftNumber, setDraftNumber] = useState(0);
-  const [publishStatus, setPublishStatus] = useState<string | null>(null);
-  const latestRun = runHistory[0];
-  const draftName = draftNumber
-    ? `Cyber Incident Response — Draft ${draftNumber}`
-    : "Cyber Incident Response — v4.2";
+  const [currentRun, setCurrentRun] = useState<SimulationRun | null>(null);
+  const [history, setHistory] = useState<SimulationRun[]>([]);
+  const [message, setMessage] = useState("");
 
-  const simulate = () => {
-    const id = `SIM-${String(runHistory.length + 1).padStart(3, "0")}`;
-    setRunHistory((history) => [
-      startSimulation(workflowNodes, id, new Date().toISOString()),
-      ...history,
-    ]);
-  };
-  const handleApproval = (decision: "approve" | "reject") => {
-    if (latestRun)
-      setRunHistory((history) => [resolveApproval(latestRun, decision), ...history.slice(1)]);
-  };
-  const createDraft = () => {
-    setDraftNumber((number) => number + 1);
-    setPublishStatus("Draft created locally from the Cyber Incident Response template.");
-  };
-  const publish = () => {
-    const valid =
-      workflowNodes.length === 7 && workflowNodes.some((node) => node.id === "approval");
-    setPublishStatus(
-      valid
-        ? "Validation passed: this draft is marked published in this local demo only. No real system was deployed."
-        : "Validation failed: this draft requires all seven steps and a Human Approval gate.",
+  function simulate() {
+    const run = startSimulation(workflowNodes, `SIM-${Date.now()}`, new Date().toISOString());
+
+    setCurrentRun(run);
+    setHistory((previous) => [run, ...previous].slice(0, 10));
+    setMessage(
+      run.completionStatus === "Waiting for approval"
+        ? "Simulation paused. Review the workflow and approve or reject it."
+        : "Simulation could not start because the workflow has no approval step.",
     );
-  };
+  }
+
+  function decideApproval(decision: "approve" | "reject") {
+    if (!currentRun) return;
+
+    const updatedRun = resolveApproval(currentRun, decision);
+
+    setCurrentRun(updatedRun);
+    setHistory((previous) => previous.map((run) => (run.id === updatedRun.id ? updatedRun : run)));
+
+    setMessage(
+      decision === "approve"
+        ? `Simulation finished with status: ${updatedRun.completionStatus}.`
+        : "Approval rejected. Remaining steps were not executed.",
+    );
+  }
+
+  const waitingForApproval = currentRun?.completionStatus === "Waiting for approval";
+
   return (
     <PageContainer>
       <PageHeader
         eyebrow="Workflows"
         title="Workflow Builder"
-        description="Compose AI-driven operational playbooks. Drag, connect, approve — with human-in-the-loop where it matters."
+        description="Explore operational playbooks with a deterministic local simulation and human approval."
         actions={
           <>
-            <button className="rounded-lg border border-border bg-card px-3 py-2 text-xs font-medium hover:bg-accent/40">
+            <button
+              type="button"
+              onClick={() =>
+                setMessage(
+                  "Workflow templates are sample data. Template selection is not implemented yet.",
+                )
+              }
+              className="rounded-lg border border-border bg-card px-3 py-2 text-xs font-medium hover:bg-accent/40"
+            >
               Templates
             </button>
             <button
               type="button"
-              onClick={createDraft}
-              className="rounded-lg bg-primary text-primary-foreground px-3 py-2 text-xs font-medium hover:opacity-90 inline-flex items-center gap-1.5"
+              onClick={() =>
+                setMessage(
+                  "Draft creation is not implemented yet. You can simulate the existing workflow below.",
+                )
+              }
+              className="rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:opacity-90 inline-flex items-center gap-1.5"
             >
-              <GitBranch className="h-3.5 w-3.5" /> New workflow
+              <GitBranch className="h-3.5 w-3.5" />
+              New workflow
             </button>
           </>
         }
       />
 
-      <div className="mt-6 grid grid-cols-1 lg:grid-cols-4 gap-4">
+      {message && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="mt-4 rounded-lg border border-border bg-card p-3 text-sm"
+        >
+          {message}
+        </div>
+      )}
+
+      <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-4">
         <Panel>
-          <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+          <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             Palette
           </div>
           <div className="space-y-2">
@@ -115,92 +143,86 @@ function WorkflowsPage() {
               { name: "Task Creation", icon: Bot },
               { name: "Notification", icon: Bell },
               { name: "Resolution", icon: CheckCircle2 },
-            ].map((p) => (
+            ].map((item) => (
               <div
-                key={p.name}
-                className="flex items-center gap-2 rounded-lg border border-dashed border-border bg-card px-3 py-2 text-xs cursor-grab hover:border-primary/40 hover:bg-primary/[0.03]"
+                key={item.name}
+                className="flex items-center gap-2 rounded-lg border border-dashed border-border bg-card px-3 py-2 text-xs"
               >
-                <p.icon className="h-3.5 w-3.5 text-primary" />
-                {p.name}
+                <item.icon className="h-3.5 w-3.5 text-primary" />
+                {item.name}
               </div>
             ))}
           </div>
         </Panel>
 
-        <Panel className="lg:col-span-3 relative overflow-hidden">
-          <div className="flex items-center justify-between mb-4">
+        <Panel className="relative overflow-hidden lg:col-span-3">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <div>
-              <div className="text-sm font-semibold">{draftName}</div>
+              <div className="text-sm font-semibold">Cyber Incident Response — v4.2</div>
               <div className="text-xs text-muted-foreground">
-                Auto-runs on Sev-1/Sev-2 · last edited 2h ago
+                Local deterministic simulation · Sample workflow
               </div>
             </div>
-            <div className="flex items-center gap-2 text-xs">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[oklch(0.95_0.06_155)] text-[oklch(0.42_0.13_155)] px-2 py-0.5 font-medium">
-                <span className="h-1.5 w-1.5 rounded-full bg-[oklch(0.55_0.15_155)]" /> Active
+
+            <div className="flex flex-wrap items-center gap-2 text-xs">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-2 py-1 font-medium text-emerald-800">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
+                Draft demo
               </span>
+
               <button
                 type="button"
                 onClick={simulate}
-                disabled={latestRun?.completionStatus === "Waiting for approval"}
-                className="rounded-lg border border-border px-3 py-1.5 hover:bg-accent/30 disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-lg border border-border px-3 py-1.5 hover:bg-accent/30"
               >
-                Simulate
-              </button>
-              <button
-                type="button"
-                onClick={publish}
-                className="rounded-lg bg-primary text-primary-foreground px-3 py-1.5"
-              >
-                Publish
+                <span className="inline-flex items-center gap-1.5">
+                  <Zap className="h-3.5 w-3.5" />
+                  Simulate
+                </span>
               </button>
             </div>
           </div>
 
-          <p
-            className="mb-4 rounded-lg border border-primary/20 bg-primary/[0.03] px-3 py-2 text-xs text-muted-foreground"
-            role="note"
-          >
-            Local mock simulation only. It uses deterministic placeholder results and never reads
-            from or writes to operational systems.
-          </p>
-          {publishStatus ? (
-            <p className="mb-4 text-xs text-muted-foreground" role="status" aria-live="polite">
-              {publishStatus}
-            </p>
-          ) : null}
+          <div className="relative overflow-x-auto rounded-2xl border border-dashed border-border bg-card p-6">
+            <div className="flex min-w-[900px] items-start gap-3">
+              {workflowNodes.map((node, index) => {
+                const Icon = iconMap[node.kind] ?? Bot;
+                const step = currentRun?.steps.find((item) => item.nodeId === node.id);
 
-          <div className="relative rounded-2xl border border-dashed border-border bg-[radial-gradient(oklch(0.9_0.02_255)_1px,transparent_1px)] [background-size:16px_16px] p-6 overflow-x-auto">
-            <div className="flex items-center gap-3 min-w-[900px]">
-              {workflowNodes.map((n, i) => {
-                const Icon = iconMap[n.kind] ?? Bot;
                 return (
-                  <div key={n.id} className="flex items-center gap-3">
-                    <div className="w-40 rounded-xl border border-border bg-card shadow-[var(--shadow-card)] p-3 hover:border-primary/40 transition">
+                  <div key={node.id} className="flex items-start gap-3">
+                    <div className="w-40 rounded-xl border border-border bg-card p-3 shadow-sm">
                       <div className="flex items-center gap-2">
-                        <div
-                          className={`h-7 w-7 rounded-lg flex items-center justify-center ${
-                            n.kind === "ai"
-                              ? "bg-gradient-to-br from-primary to-[oklch(0.62_0.19_275)] text-primary-foreground"
-                              : n.kind === "human"
-                                ? "bg-[oklch(0.96_0.06_80)] text-[oklch(0.5_0.16_75)]"
-                                : n.kind === "terminal"
-                                  ? "bg-[oklch(0.95_0.06_155)] text-[oklch(0.42_0.13_155)]"
-                                  : n.kind === "trigger"
-                                    ? "bg-destructive/10 text-destructive"
-                                    : "bg-primary/10 text-primary"
-                          }`}
-                        >
+                        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
                           <Icon className="h-3.5 w-3.5" />
                         </div>
-                        <span className="text-xs font-semibold">{n.label}</span>
+                        <span className="text-xs font-semibold">{node.label}</span>
                       </div>
-                      <p className="text-[11px] text-muted-foreground mt-1.5 leading-snug">
-                        {n.desc}
+
+                      <p className="mt-1.5 text-[11px] leading-snug text-muted-foreground">
+                        {node.desc}
                       </p>
+
+                      <div className="mt-3">
+                        {step ? (
+                          <span
+                            className={`inline-flex rounded-full px-2 py-1 text-[10px] font-medium ${statusClasses(step.status)}`}
+                          >
+                            {step.status}
+                          </span>
+                        ) : (
+                          <span className="text-[10px] text-muted-foreground">Not run</span>
+                        )}
+                      </div>
                     </div>
-                    {i < workflowNodes.length - 1 ? (
-                      <svg width="32" height="12" className="text-border">
+
+                    {index < workflowNodes.length - 1 && (
+                      <svg
+                        aria-hidden="true"
+                        width="32"
+                        height="12"
+                        className="mt-8 shrink-0 text-border"
+                      >
                         <line
                           x1="0"
                           y1="6"
@@ -212,115 +234,105 @@ function WorkflowsPage() {
                         />
                         <polygon points="24,2 32,6 24,10" fill="currentColor" />
                       </svg>
-                    ) : null}
+                    )}
                   </div>
                 );
               })}
             </div>
           </div>
 
-          {latestRun ? (
-            <section
-              className="mt-4 rounded-xl border border-border p-4"
-              aria-labelledby="simulation-title"
-            >
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <h2 id="simulation-title" className="text-sm font-semibold">
-                    Current mock simulation: {latestRun.id}
-                  </h2>
-                  <p className="text-xs text-muted-foreground">
-                    Started {formatRunTime(latestRun.startedAt)} · {latestRun.completionStatus}
+          {waitingForApproval && (
+            <div className="mt-4 rounded-xl border border-amber-300 bg-amber-50 p-4">
+              <div className="flex items-start gap-3">
+                <ShieldCheck className="mt-0.5 h-5 w-5 text-amber-700" />
+                <div className="flex-1">
+                  <h3 className="text-sm font-semibold text-amber-950">Human approval required</h3>
+                  <p className="mt-1 text-xs text-amber-900">
+                    Review this simulated workflow before allowing the remaining steps to complete.
+                    No real operational actions will run.
                   </p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      onClick={() => decideApproval("approve")}
+                      className="rounded-lg bg-emerald-700 px-3 py-2 text-xs font-medium text-white hover:bg-emerald-800"
+                    >
+                      <span className="inline-flex items-center gap-1.5">
+                        <CheckCircle2 className="h-3.5 w-3.5" />
+                        Approve
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => decideApproval("reject")}
+                      className="rounded-lg border border-red-300 bg-white px-3 py-2 text-xs font-medium text-red-700 hover:bg-red-50"
+                    >
+                      <span className="inline-flex items-center gap-1.5">
+                        <XCircle className="h-3.5 w-3.5" />
+                        Reject
+                      </span>
+                    </button>
+                  </div>
                 </div>
-                {latestRun.completionStatus === "Waiting for approval" ? (
-                  <div className="flex gap-2">
-                    <button
-                      type="button"
-                      onClick={() => handleApproval("approve")}
-                      className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground"
-                    >
-                      Approve
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleApproval("reject")}
-                      className="rounded-lg border border-destructive/30 px-3 py-1.5 text-xs font-medium text-destructive hover:bg-destructive/10"
-                    >
-                      Reject
-                    </button>
-                  </div>
-                ) : null}
               </div>
-              <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-4">
-                {latestRun.steps.map((step) => (
-                  <div
-                    key={step.nodeId}
-                    className="flex items-center justify-between gap-2 rounded-lg bg-muted/40 px-3 py-2 text-xs"
-                  >
-                    <span>{step.label}</span>
-                    <span
-                      className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium ${statusStyles[step.status]}`}
-                    >
-                      {step.status}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </section>
-          ) : null}
+            </div>
+          )}
 
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3">
-            {[
-              { name: "Cyber Incident Response", runs: 128, ok: 96 },
-              { name: "Staffing Reallocation", runs: 74, ok: 91 },
-              { name: "Supplier Failover", runs: 41, ok: 88 },
-            ].map((w) => (
-              <div key={w.name} className="rounded-xl border border-border p-4">
-                <div className="text-sm font-medium">{w.name}</div>
-                <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
-                  <span>{w.runs} runs</span>
-                  <span className="font-medium text-[oklch(0.42_0.13_155)]">{w.ok}% success</span>
+          {currentRun && (
+            <div className="mt-4 rounded-xl border border-border p-4">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h3 className="text-sm font-semibold">Current simulation</h3>
+                <span className="rounded-full bg-muted px-2 py-1 text-xs">
+                  {currentRun.completionStatus}
+                </span>
+              </div>
+              <div className="mt-2 text-xs text-muted-foreground">Run ID: {currentRun.id}</div>
+              <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
+                <Clock className="h-3.5 w-3.5" />
+                Started: {new Date(currentRun.startedAt).toLocaleString()}
+              </div>
+            </div>
+          )}
+        </Panel>
+      </div>
+
+      <Panel className="mt-6">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-sm font-semibold">Simulation history</h2>
+          <span className="text-xs text-muted-foreground">
+            {history.length} run{history.length === 1 ? "" : "s"} · Current session only
+          </span>
+        </div>
+
+        {history.length === 0 ? (
+          <p className="text-sm text-muted-foreground">
+            No simulations yet. Select Simulate to start your first run.
+          </p>
+        ) : (
+          <div className="space-y-3">
+            {history.map((run) => (
+              <div
+                key={run.id}
+                className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border p-3"
+              >
+                <div>
+                  <div className="text-sm font-medium">{run.id}</div>
+                  <div className="mt-1 text-xs text-muted-foreground">
+                    {new Date(run.startedAt).toLocaleString()}
+                  </div>
+                  <div className="mt-1 text-xs text-muted-foreground">
+                    {run.steps.filter((step) => step.status === "Completed").length}/
+                    {run.steps.length} steps completed
+                  </div>
                 </div>
+                <span className="rounded-full bg-muted px-2 py-1 text-xs">
+                  {run.completionStatus}
+                </span>
               </div>
             ))}
           </div>
-
-          {runHistory.length > 0 ? (
-            <section className="mt-4" aria-labelledby="run-history-title">
-              <h2 id="run-history-title" className="text-sm font-semibold">
-                Local mock run history
-              </h2>
-              <div className="mt-2 overflow-x-auto rounded-xl border border-border">
-                <table className="w-full min-w-[640px] text-left text-xs">
-                  <thead className="bg-muted/50 text-muted-foreground">
-                    <tr>
-                      <th className="px-3 py-2 font-medium">Run ID</th>
-                      <th className="px-3 py-2 font-medium">Started</th>
-                      <th className="px-3 py-2 font-medium">Completion status</th>
-                      <th className="px-3 py-2 font-medium">Step results</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {runHistory.map((run) => (
-                      <tr key={run.id} className="border-t border-border">
-                        <td className="px-3 py-2 font-medium">{run.id}</td>
-                        <td className="px-3 py-2 text-muted-foreground">
-                          {formatRunTime(run.startedAt)}
-                        </td>
-                        <td className="px-3 py-2">{run.completionStatus}</td>
-                        <td className="px-3 py-2 text-muted-foreground">
-                          {run.steps.map((step) => `${step.label}: ${step.status}`).join(" · ")}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-          ) : null}
-        </Panel>
-      </div>
+        )}
+      </Panel>
     </PageContainer>
   );
 }
