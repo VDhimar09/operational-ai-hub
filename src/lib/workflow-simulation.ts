@@ -14,6 +14,7 @@ export interface SimulationRun {
   id: string;
   startedAt: string;
   completionStatus: SimulationCompletionStatus;
+  failureReason?: string;
   steps: SimulationStep[];
 }
 
@@ -62,9 +63,19 @@ export function resolveApproval(
       ),
     };
   }
-  const failureIndex = failAtNodeId
-    ? run.steps.findIndex((step) => step.nodeId === failAtNodeId)
-    : -1;
+  const failureIndex =
+    failAtNodeId !== undefined ? run.steps.findIndex((step) => step.nodeId === failAtNodeId) : -1;
+  if (failAtNodeId !== undefined && failureIndex <= approvalIndex) {
+    return {
+      ...run,
+      completionStatus: "Failed",
+      failureReason: `Failure step "${failAtNodeId}" must identify a workflow step after approval.`,
+      steps: run.steps.map((step, index) =>
+        index === approvalIndex ? { ...step, status: "Completed" } : step,
+      ),
+    };
+  }
+
   return {
     ...run,
     completionStatus: failureIndex > approvalIndex ? "Failed" : "Completed",

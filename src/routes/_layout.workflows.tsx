@@ -110,7 +110,7 @@ function WorkflowsPage() {
                   "Draft creation is not implemented yet. You can simulate the existing workflow below.",
                 )
               }
-              className="rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:opacity-90 inline-flex items-center gap-1.5"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:opacity-90"
             >
               <GitBranch className="h-3.5 w-3.5" />
               New workflow
