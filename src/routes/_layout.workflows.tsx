@@ -10,6 +10,7 @@ import {
   type SimulationStepStatus,
 } from "@/lib/workflow-simulation";
 import {
+  Activity,
   Bot,
   CheckCircle2,
   GitBranch,
@@ -103,6 +104,7 @@ function WorkflowsPage() {
             >
               Templates
             </button>
+
             <button
               type="button"
               onClick={() =>
@@ -134,6 +136,7 @@ function WorkflowsPage() {
           <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             Palette
           </div>
+
           <div className="space-y-2">
             {[
               { name: "Trigger", icon: Zap },
@@ -196,6 +199,7 @@ function WorkflowsPage() {
                         <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
                           <Icon className="h-3.5 w-3.5" />
                         </div>
+
                         <span className="text-xs font-semibold">{node.label}</span>
                       </div>
 
@@ -245,12 +249,15 @@ function WorkflowsPage() {
             <div className="mt-4 rounded-xl border border-amber-300 bg-amber-50 p-4">
               <div className="flex items-start gap-3">
                 <ShieldCheck className="mt-0.5 h-5 w-5 text-amber-700" />
+
                 <div className="flex-1">
                   <h3 className="text-sm font-semibold text-amber-950">Human approval required</h3>
+
                   <p className="mt-1 text-xs text-amber-900">
                     Review this simulated workflow before allowing the remaining steps to complete.
                     No real operational actions will run.
                   </p>
+
                   <div className="mt-3 flex flex-wrap gap-2">
                     <button
                       type="button"
@@ -262,6 +269,7 @@ function WorkflowsPage() {
                         Approve
                       </span>
                     </button>
+
                     <button
                       type="button"
                       onClick={() => decideApproval("reject")}
@@ -282,15 +290,89 @@ function WorkflowsPage() {
             <div className="mt-4 rounded-xl border border-border p-4">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <h3 className="text-sm font-semibold">Current simulation</h3>
+
                 <span className="rounded-full bg-muted px-2 py-1 text-xs">
                   {currentRun.completionStatus}
                 </span>
               </div>
+
               <div className="mt-2 text-xs text-muted-foreground">Run ID: {currentRun.id}</div>
+
               <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
                 <Clock className="h-3.5 w-3.5" />
                 Started: {new Date(currentRun.startedAt).toLocaleString()}
               </div>
+            </div>
+          )}
+
+          {/* Simulated execution timeline */}
+          {currentRun && (
+            <div className="mt-4 rounded-xl border border-border bg-card p-4">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <h3 className="text-sm font-semibold">Simulated Execution Timeline</h3>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Chronological record of workflow events.
+                  </p>
+                </div>
+
+                <span className="rounded-full bg-muted px-2 py-1 text-xs">
+                  {currentRun.events.length} events
+                </span>
+              </div>
+
+              <div className="mt-4 space-y-4">
+                {currentRun.events.map((event) => {
+                  const isFailure =
+                    event.type === "step_failed" ||
+                    event.type === "workflow_failed" ||
+                    event.type === "approval_rejected";
+
+                  const isApproval = event.type === "approval_requested";
+
+                  const EventIcon = isFailure
+                    ? XCircle
+                    : isApproval
+                      ? ShieldCheck
+                      : event.type === "workflow_started"
+                        ? Activity
+                        : CheckCircle2;
+
+                  const iconColour = isFailure
+                    ? "text-red-600 bg-red-100"
+                    : isApproval
+                      ? "text-amber-700 bg-amber-100"
+                      : "text-emerald-700 bg-emerald-100";
+
+                  return (
+                    <div key={event.id} className="flex items-start gap-3">
+                      <div
+                        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${iconColour}`}
+                      >
+                        <EventIcon className="h-4 w-4" />
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        <p className="text-xs font-medium">{event.message}</p>
+
+                        {event.nodeId && (
+                          <p className="mt-1 text-xs text-muted-foreground">
+                            Workflow node: {event.nodeId}
+                          </p>
+                        )}
+
+                        <p className="mt-1 text-[11px] text-muted-foreground">
+                          {new Date(event.timestamp).toLocaleTimeString()}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <p className="mt-4 border-t border-border pt-3 text-[11px] text-muted-foreground">
+                These are simulated event timestamps, not actual operational execution times.
+              </p>
             </div>
           )}
         </Panel>
@@ -299,6 +381,7 @@ function WorkflowsPage() {
       <Panel className="mt-6">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-sm font-semibold">Simulation history</h2>
+
           <span className="text-xs text-muted-foreground">
             {history.length} run{history.length === 1 ? "" : "s"} · Current session only
           </span>
@@ -317,14 +400,17 @@ function WorkflowsPage() {
               >
                 <div>
                   <div className="text-sm font-medium">{run.id}</div>
+
                   <div className="mt-1 text-xs text-muted-foreground">
                     {new Date(run.startedAt).toLocaleString()}
                   </div>
+
                   <div className="mt-1 text-xs text-muted-foreground">
                     {run.steps.filter((step) => step.status === "Completed").length}/
                     {run.steps.length} steps completed
                   </div>
                 </div>
+
                 <span className="rounded-full bg-muted px-2 py-1 text-xs">
                   {run.completionStatus}
                 </span>
